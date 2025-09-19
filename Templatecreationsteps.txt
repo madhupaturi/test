@@ -1,0 +1,47 @@
+Create a new item for backup job status:
+Name: Backup Job Status
+Type: Zabbix agent (active)
+Key: system.run[<command to check backup job status>]
+Type of information: Numeric (unsigned)
+Update interval: 1h (adjust as needed)
+History storage period: 7d (adjust as needed)
+The <command to check backup job status> will depend on your backup software. 
+
+Step 2: Define Triggers
+Triggers will alert you based on the collected data.
+Create a new trigger for backup job failure:
+Name: Backup Job Failed
+Expression: {Template_Backup_Job_Status:system.run[<command to check backup job status>].last()}=1
+Severity: High
+Description: This trigger is activated if the backup job fails.
+
+Step 3: Define Actions
+Actions can notify you via email, SMS, or other methods when a trigger is activated.
+Create a new action:
+Name: Notify on Backup Job Failure
+Event source: Trigger
+Trigger name: Backup Job Failed
+
+Step 4: Define Graphs (Optional)
+Graphs can help visualize backup job status over time.
+Create a new graph:
+Name: Backup Job Status
+Items: Add the item Backup Job Status to the graph.
+
+Step 5: Create the Template
+Combine all the above components into a single template.
+Create a new template:
+Name: Template_Backup_Job_Status
+Groups: Templates/Your_Group
+
+Add items, triggers, and graphs to the template:
+Items: Add the Backup Job Status item.
+Triggers: Add the Backup Job Failed trigger.
+Graphs: Add the Backup Job Status graph.
+
+Step 6: Link the Template to Hosts
+Apply the template to the hosts that perform the backup jobs.
+Go to Configuration > Hosts.
+Select the host(s) where the backup job runs.
+Go to the Templates tab.
+Link the Template_Backup_Job_Status template.
